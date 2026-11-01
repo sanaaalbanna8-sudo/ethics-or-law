@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الحدّان · أخلاق التكنولوجيا وقانونها</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            ar: ['"IBM Plex Sans Arabic"', "sans-serif"],
+            display: ["Amiri", "serif"]
+          },
+          colors: {
+            ink: "#0e1c36",
+            gold: "#b8956c",
+            ivory: "#f6f3ec",
+            pine: "#1e6b52"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: "IBM Plex Sans Arabic", sans-serif; background: #f6f3ec; color: #0e1c36; }
+    .font-display { font-family: Amiri, serif; }
+    .stage { animation: rise 0.45s ease both; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stage { animation: none; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[radial-gradient(900px_480px_at_100%_-10%,rgba(184,149,108,0.18),transparent_55%),radial-gradient(800px_420px_at_-10%_110%,rgba(14,28,54,0.08),transparent_50%),#f6f3ec] text-ink">
+  <div id="app" class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10"></div>
+  <script>
+    const CASES = [
+      {
+        topic: "الرسائل التجارية",
+        chapter: "law",
+        text: "إرسال رسائل تسويقية مزعجة عبر البريد الإلكتروني إلى أناس لم يسجّلوا لاستلامها.",
+        answer: "law",
+        explain: "الرسالة التجارية إلى من لم يطلبها ليست قلة ذوق فقط. التشريع يشترط الموافقة قبل الإرسال، ويعطي صاحب البريد حقاً في الرفض. المنع مكتوب حتى لا يتحول صندوق الناس إلى لوحة إعلان مفتوحة. التصنيف قانون."
+      },
+      {
+        topic: "الخصوصية",
+        chapter: "ethics",
+        text: "استغلال ثغرة بسيطة في شبكة تواصل اجتماعي لرؤية صور الأصدقاء، من غير اختراق للخوادم.",
+        answer: "ethics",
+        explain: "الصورة لم تُنشر لكِ، والثغرة ليست دعوة. الاطلاع على ما أبقاه الناس لأنفسهم يكسر الثقة حتى لو بدا الوصول سهلاً. باب الحالة الخصوصية، والتصنيف أخلاق: الحد هنا احترام ما لا يخصك."
+      },
+      {
+        topic: "عدم المساواة",
+        chapter: "ethics",
+        text: "تطوير خوارزمية ذكاء اصطناعي للتوظيف تتحيز عمداً ضد فئة عمرية.",
+        answer: "ethics",
+        explain: "الخوارزمية لا تتحيز وحدها. من درّبتها اختارت أن يُستبعد عمر. هذا ظلم يُبنى داخل الأداة ثم يتكرر مع كل طلب. باب الحالة عدم المساواة، والتصنيف أخلاق لأن السؤال عن عدالة التصميم."
+      },
+      {
+        topic: "إساءة استخدام الحاسوب",
+        chapter: "law",
+        text: "تثبيت برمجية تجسس على أجهزة المنافسين لسرقة أسرار تجارية.",
+        answer: "law",
+        explain: "الجهاز ليس مفتوحاً لأن المنافسة قوية. الدخول غير المأذون وأخذ السر التجاري يقعان تحت إساءة استخدام الحاسوب: اطلاع بلا إذن، وأخذ مادة لا تخص الداخل. التصنيف قانون، بغض النظر عن عبارة «معرفة السوق»."
+      },
+      {
+        topic: "الأخلاق والسلوك",
+        chapter: "ethics",
+        text: "تضمين مصيدة مالية في لعبة أطفال تجعل الطفل يشتري بمئات الدولارات من غير موافقة الأهل.",
+        answer: "ethics",
+        explain: "من يصمم اللعبة يعرف أن الطفل لا يفصل بين اللعب والدفع، ثم يضع المصيدة في هذا المكان. هذا سلوك مهني يستخدم ضعفاً واضحاً ويتجاوز ولي الأمر. باب الحالة الأخلاق والسلوك، والتصنيف أخلاق."
+      },
+      {
+        topic: "حقوق النشر",
+        chapter: "law",
+        text: "أخذ شيفرة مصدرية من منصة مفتوحة المصدر واستعمالها تجارياً من غير ترخيص.",
+        answer: "law",
+        explain: "المصدر المفتوح ليس مشاعاً بلا شرط. لكل رخصة حدود، والاستعمال التجاري خارجها اعتداء على حق المؤلف. كلمة «مفتوح» تصف طريقة النشر لا إلغاء القانون. باب الحالة حقوق النشر، والتصنيف قانون."
+      },
+      {
+        topic: "الأخلاق والسلوك",
+        chapter: "ethics",
+        text: "إخفاء زر حذف الحساب نهائياً داخل موقع، حتى لا يستطيع الناس المغادرة.",
+        answer: "ethics",
+        explain: "الخدمة التي تحتجز صاحبها تخدع لا تنظّم. إخفاء الحذف يبقي الإنسان وبياناته رغم إرادته. هذا سلوك تصميم يسلب الاختيار. التصنيف أخلاق، في باب الأخلاق والسلوك."
+      },
+      {
+        topic: "إساءة استخدام الحاسوب",
+        chapter: "law",
+        text: "اختراق بنك لسرقة الأموال وتحويلها عبر عملات رقمية.",
+        answer: "law",
+        explain: "الدخول إلى نظام البنك وأخذ المال جريمة. تغيير طريق التحويل لا يغيّر الوصف: اطلاع غير مأذون وسرقة. باب الحالة إساءة استخدام الحاسوب، والتصنيف قانون."
+      },
+      {
+        topic: "التعبير والاستخدام المقبول",
+        chapter: "ethics",
+        text: "نشر خبر كاذب مفبرك بتقنية التزييف العميق، على أنه حدث حقيقي.",
+        answer: "ethics",
+        explain: "التعبير ينقل رأياً أو خبراً يُسأل عن صدقه. التلفيق يضر الشخص المخترَع ويخدع من يصدقه. التقنية لا تجعل الكذب نشراً مقبولاً. باب الحالة التعبير والاستخدام المقبول، والتصنيف أخلاق."
+      },
+      {
+        topic: "حماية البيانات",
+        chapter: "law",
+        text: "بيع بيانات المستخدمين لشركات أخرى عبر بند شديد التعقيد داخل سياسة الخصوصية.",
+        answer: "law",
+        explain: "بيع البيانات يحتاج أساساً يفهمه صاحبها. البند الطويل المخفي لا يصنع موافقة. حماية البيانات تشترط الشفافية والغرض المحدد، لا صفحة تُوقَّع بلا قراءة. التصنيف قانون."
+      },
+      {
+        topic: "البيئة",
+        chapter: "ethics",
+        text: "العيادة تستبدل حواسيبها كل سنة وهي ما زالت تعمل، ثم تضع الأجهزة في حاوية النفايات العامة.",
+        answer: "ethics",
+        explain: "الجهاز السليم ليس قمامة. استبداله بلا حاجة يستهلك طاقة ومواداً، ورميه خارج مسار إعادة التدوير ينقل الضرر إلى خارج المكتب. باب الحالة البيئة، والتصنيف أخلاق: السؤال عن أثر القرار لا عن ذوق المكتب."
+      },
+      {
+        topic: "آداب الإنترنت والعولمة",
+        chapter: "ethics",
+        text: "في فريق دعم يعمل من أكثر من بلد، تُنشر صورة زميل مع تعليق ساخر، فيفهمها زميله في البلد الآخر إهانة.",
+        answer: "ethics",
+        explain: "آداب الإنترنت ليست مزاح الممر. الرسالة تعبر إلى ثقافة أخرى، والصورة خصوصية لم تُمنح للمجموعة. العولمة تكبر أثر الجملة الصغيرة. باب الحالة آداب الإنترنت والعولمة، والتصنيف أخلاق."
+      },
+      {
+        topic: "القبعات الثلاث",
+        chapter: "ethics",
+        text: "زميلة تدخل بوابة العيادة بلا إذن مكتوب، ثم ترسل للإدارة ملاحظات عن الثغرات وتقول إنها قبعة بيضاء لأنها لم تنشر شيئاً.",
+        answer: "ethics",
+        explain: "القبعات تُفرَق بالإذن لا بحسن الحديث. القبعة البيضاء عقد مكتوب قبل أي اختبار. من تدخل بلا إذن وتدّعي المساعدة تقف في المنطقة الرمادية: النية لا تكفي. باب الحالة القبعات الثلاث، والتصنيف أخلاق. والدخول بلا إذن قد يقع أيضاً تحت إساءة استخدام الحاسوب."
+      },
+      {
+        topic: "مشهد العيادة",
+        chapter: "ethics",
+        text: "في عيادة نبض، ترى موظفة الاستقبال اسم جارتها في مواعيد اليوم، فتفتح الملف لتعرف التشخيص ثم تغلقه.",
+        answer: "ethics",
+        explain: "مشهد العيادة يضع السر أمام من ترى الشاشة كل يوم. المبرر الوحيد للفتح دور علاجي، لا فضول. إغلاق الملف بعد النظر لا يعيد السر. باب الحالة مشهد العيادة، والتصنيف أخلاق. وحماية البيانات تقف إلى جانب هذا الحد."
+      },
+      {
+        topic: "لماذا التشريع",
+        chapter: "law",
+        text: "بعد تسرب محدود تقول الإدارة: لم يشتكِ أحد، وسياستنا الداخلية تكفي، فلا حاجة لقانون عام يحمي البيانات.",
+        answer: "law",
+        explain: "التشريع يُكتب قبل الحادثة لا بعدها. السياسة الداخلية تتغير حين تتعارض مع راحة الشركة، والضرر قد يظهر متأخراً على من لا يملك قوة التفاوض. القانون يضع قاعدة واحدة للجميع. باب الحالة لماذا التشريع، والتصنيف قانون."
+      },
+      {
+        topic: "الصحة والسلامة",
+        chapter: "law",
+        text: "موظفات إدخال البيانات يعملن ساعات متصلة بلا راحة للبصر، والشاشة أخفض من العين، وأسلاك الطاقة تمر في الممر.",
+        answer: "law",
+        explain: "الصحة والسلامة ليست لطف مدير. تشريع محطة العمل يشمل وضعية الشاشة، والراحة البصرية، ومنع خطر التعثر. من تعمل على الجهاز طوال اليوم طرف يحميه نص، لا مزاج الوردية. باب الحالة الصحة والسلامة، والتصنيف قانون."
+      },
+      {
+        topic: "حقوق المستهلك",
+        chapter: "law",
+        text: "طالبة تشتري محتوى رقمياً وُعد بأنه يعمل على جهازها، فلا يعمل، والبائع يغلق الطلب بلا إصلاح ولا رد للثمن.",
+        answer: "law",
+        explain: "المحتوى الرقمي سلعة لها وصف. إن لم يطابق الوصف فالحق في الإصلاح أو الرد قائم. الاسم المعتمد في المملكة المتحدة هو قانون حقوق المستهلك لعام 2015، ومهلة العقود عن بعد تأتي من لوائح الإلغاء. باب الحالة حقوق المستهلك، والتصنيف قانون."
+      },
+      {
+        topic: "إطار تيسير الوصول",
+        chapter: "law",
+        text: "بوابة تسجيل في خدمة عامة مبنية من صور فقط، بلا نص بديل، وقارئ الشاشة يقف قبل زر الإرسال.",
+        answer: "law",
+        explain: "تيسير الوصول يعني أن الخدمة تُكمَل بيد من لا يرى الصفحة كما يراها المصمم. نص بديل، وترتيب يصل إليه قارئ الشاشة، وزر يمكن تشغيله. إغلاق التسجيل على المبصرين يمنع حقاً. باب الحالة إطار تيسير الوصول، والتصنيف قانون."
+      },
+      {
+        topic: "قانون البلد",
+        chapter: "law",
+        text: "فرع العيادة في الأردن يحفظ ملفات المرضى بالرجوع إلى ملخص أوروبي مترجم، ولا يراجع قانون الجرائم الإلكترونية ولا قانون حماية البيانات الشخصية من نصهما الرسمي.",
+        answer: "law",
+        explain: "المرجع البريطاني والأوروبي لا يلغي قانون المكان. في الأردن يُراجع قانون الجرائم الإلكترونية وقانون حماية البيانات الشخصية من النص الرسمي، لأن التعديل يغيّر الإجراء. اسم القانون وسنته لا يُخمَّنان. باب الحالة قانون البلد، والتصنيف قانون."
+      },
+      {
+        topic: "التعبير والاستخدام المقبول",
+        chapter: "ethics",
+        text: "أثناء الدوام تُستخدم شبكة العيادة لتنزيل مسلسل، وسياسة الاستخدام المقبول تقصر الشبكة على العمل.",
+        answer: "ethics",
+        explain: "الشبكة مورد مشترك لا امتداد للبيت. سياسة الاستخدام المقبول تسمي ما يمر في وقت العمل، وتحمي الجهاز والزميلات من حمولة لا تخص العيادة. باب الحالة التعبير والاستخدام المقبول، والتصنيف أخلاق."
+      }
+    ];
+
+    const TOPICS = [
+      ["الأخلاق", ["الأخلاق والسلوك", "الخصوصية", "البيئة", "عدم المساواة", "آداب الإنترنت والعولمة", "التعبير والاستخدام المقبول", "القبعات الثلاث", "مشهد العيادة"]],
+      ["القانون", ["لماذا التشريع", "إساءة استخدام الحاسوب", "حقوق النشر", "الصحة والسلامة", "حماية البيانات", "حقوق المستهلك", "إطار تيسير الوصول", "قانون البلد"]]
+    ];
+
+    const state = { step: "welcome", index: 0, picks: [] };
+    const app = document.getElementById("app");
+    let lock = false;
+
+    function esc(value) {
+      return String(value).replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+
+    function word(answer) {
+      return answer === "law" ? "قانون" : "أخلاق";
+    }
+
+    function render() {
+      lock = false;
+      if (state.step === "welcome") app.innerHTML = welcome();
+      else if (state.step === "quiz") app.innerHTML = quiz();
+      else app.innerHTML = results();
+    }
+
+    function welcome() {
+      const columns = TOPICS.map(([title, items]) => `
+        <article class="rounded-3xl border border-[#e4dccb] bg-white/80 p-5">
+          <h2 class="font-display text-2xl text-gold">${title === "الأخلاق" ? "ج٣ · الأخلاق" : "ج٤ · القانون"}</h2>
+          <ul class="mt-3 space-y-1.5 text-sm leading-7 text-[#3d4d66]">
+            ${items.map((item) => `<li>${item}</li>`).join("")}
+          </ul>
+        </article>`).join("");
+      return `
+        <section class="stage">
+          <p class="font-display text-sm tracking-[0.18em] text-gold">IT ETHICS · IT LAW</p>
+          <h1 class="mt-2 font-display text-5xl leading-tight sm:text-6xl">الحدّان</h1>
+          <p class="mt-3 max-w-2xl text-lg leading-9 text-[#31445f]">فهم الفارق بين ما يمنعنا عنه القانون وما تمنعنا عنه الأخلاق في التكنولوجيا.</p>
+          <p class="mt-2 max-w-2xl text-sm leading-7 text-[#5c6d84]">عشرون حالة من البابين. زرّان فقط تحت كل حالة، والشرح يأتي بعد الأخيرة.</p>
+          <button type="button" data-action="start" class="mt-6 rounded-full bg-ink px-8 py-3 text-white transition hover:bg-[#1a3058]">ابدئي الحالات</button>
+          <div class="mt-10 grid gap-4 md:grid-cols-2">${columns}</div>
+        </section>`;
+    }
+
+    function quiz() {
+      const item = CASES[state.index];
+      const n = state.index + 1;
+      const width = Math.round((n / CASES.length) * 100);
+      return `
+        <section class="stage">
+          <header class="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p class="text-xs tracking-[0.16em] text-gold">الحدّان</p>
+              <p class="mt-1 text-sm text-[#5c6d84]">الحالة <bdi dir="ltr">${n} / ${CASES.length}</bdi></p>
+            </div>
+          </header>
+          <div class="mb-6 h-1.5 overflow-hidden rounded-full bg-[#e4dccb]">
+            <div class="h-full rounded-full bg-ink transition-all duration-500" style="width:${width}%"></div>
+          </div>
+          <article class="mx-auto max-w-3xl rounded-[28px] border border-[#e4dccb] bg-white px-6 py-10 shadow-[0_24px_60px_rgba(14,28,54,0.06)] sm:px-12">
+            <p class="text-sm text-gold">اقرئي الحالة ثم اختاري الحد</p>
+            <h2 class="mt-4 font-display text-3xl leading-[1.7] sm:text-4xl">${esc(item.text)}</h2>
+            <div class="mt-10 grid gap-3 sm:grid-cols-2">
+              <button type="button" data-action="pick" data-pick="law" class="rounded-2xl bg-ink px-4 py-5 text-xl text-white transition hover:bg-[#1a3058]">⚖️ قانون</button>
+              <button type="button" data-action="pick" data-pick="ethics" class="rounded-2xl bg-pine px-4 py-5 text-xl text-white transition hover:bg-[#185743]">💚 أخلاق</button>
+            </div>
+          </article>
+        </section>`;
+    }
+
+    function results() {
+      const correct = state.picks.filter((pick, i) => pick === CASES[i].answer).length;
+      const rows = CASES.map((item, i) => {
+        const pick = state.picks[i];
+        const ok = pick === item.answer;
+        return `
+          <article class="rounded-3xl border ${ok ? "border-[#d7e6df]" : "border-[#eadfce]"} bg-white p-5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p class="text-sm text-gold"><bdi dir="ltr">${i + 1}</bdi> · ${esc(item.topic)}</p>
+              <p class="text-sm ${ok ? "text-pine" : "text-[#8a5a32]"}">${ok ? "صواب" : "مراجعة"}</p>
+            </div>
+            <h3 class="mt-3 text-lg leading-8">${esc(item.text)}</h3>
+            <p class="mt-3 text-sm leading-7 text-[#3d4d66]">إجابتكِ: ${word(pick)} · المعتمدة: ${word(item.answer)}</p>
+            <p class="mt-2 text-sm leading-8 text-[#24344c]">${esc(item.explain)}</p>
+          </article>`;
+      }).join("");
+      return `
+        <section class="stage">
+          <p class="text-xs tracking-[0.16em] text-gold">النتيجة</p>
+          <h2 class="mt-2 font-display text-5xl">نتيجتكِ <bdi dir="ltr">${correct} / ${CASES.length}</bdi></h2>
+          <p class="mt-3 max-w-2xl leading-8 text-[#31445f]">في الحياة قد يجتمع الحدّان في موقف واحد. التصنيف هنا هو بؤرة الحالة كما وضعها المنهج: الأخلاق سلوك وخصوصية وبيئة ومساواة وآداب وقبعات ومشهد عيادة، والقانون تشريع وحماية وحقوق.</p>
+          <button type="button" data-action="restart" class="mt-6 rounded-full bg-ink px-8 py-3 text-white">إعادة الاختبار</button>
+          <div class="mt-8 grid gap-4">${rows}</div>
+        </section>`;
+    }
+
+    function pick(answer) {
+      if (lock || state.step !== "quiz") return;
+      lock = true;
+      state.picks[state.index] = answer;
+      const card = app.querySelector("article");
+      if (card) card.style.opacity = "0.35";
+      window.setTimeout(() => {
+        if (state.index === CASES.length - 1) state.step = "results";
+        else state.index += 1;
+        render();
+      }, 220);
+    }
+
+    app.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-action]");
+      if (!button) return;
+      const action = button.dataset.action;
+      if (action === "start") {
+        state.step = "quiz";
+        state.index = 0;
+        state.picks = [];
+        render();
+      } else if (action === "pick") {
+        pick(button.dataset.pick);
+      } else if (action === "restart") {
+        state.step = "welcome";
+        state.index = 0;
+        state.picks = [];
+        render();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
